@@ -21,7 +21,7 @@ namespace Identity
         }
 
         public IConfiguration Configuration { get; }
-
+        //The Startup Class contains 2 methods – ConfigureServices() and Configure().
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -31,15 +31,33 @@ namespace Identity
                    options.UseSqlServer(
                    Configuration.GetConnectionString("IdentityContextConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.SignIn.RequireConfirmedAccount = true;
+
+                })
                 .AddDefaultTokenProviders()
                 .AddDefaultUI()
          .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.Configure<IdentityOptions>(options =>
+            {
+                
+               // options.Password.RequireDigit = true; //Requires a number between 0 - 9 in the password. Default is true
+                options.Password.RequiredLength = 8; //	The minimum length of the password is 6
+               // options.Password.RequireNonAlphanumeric = false; //Requires a non-alphanumeric character in the password. Default is true
+               // options.Password.RequireUppercase = true;//Requires an uppercase character in the password.Default is true
+               // options.Password.RequireLowercase = false; //Requires a lowercase character in the password.Default is true
+               //options.Password.RequiredUniqueChars = 1;//Requires the number of distinct characters in the password. 1
+
+
+                //Sign In Options
+                //options.SignIn.RequireConfirmedEmail = false;
+                //options.SignIn.RequireConfirmedPhoneNumber = false;
+            });
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline which is also know by the name middleware.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

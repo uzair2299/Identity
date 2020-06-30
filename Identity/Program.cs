@@ -13,13 +13,16 @@ namespace Identity
     {
         public static void Main(string[] args)
         {
+            //The Build() function builds the application and if no errors are found then will run your application on the browser.
             CreateHostBuilder(args).Build().Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    //The UseStartup() function calls the Startup.cs class which is also kept on the application root folder.The Startup.cs class provides application specific configuration.The Program Class calls the Startup Class using UseStartup() function
                     webBuilder.UseStartup<Startup>();
                 });
     }
