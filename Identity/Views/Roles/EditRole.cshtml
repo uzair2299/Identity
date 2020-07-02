@@ -1,0 +1,43 @@
+﻿@model ApplicationRole
+@{
+    ViewData["Title"] = "EditRole";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>EditRole</h1>
+@if (ViewBag.ErrorMsg != null)
+{
+    <div class="alert alert-dark" role="alert">
+        @ViewBag.ErrorMsg
+    </div>
+}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <section>
+            <form id="editRole" asp-action="EditRole" asp-controller="Roles" method="post">
+                <h4>Edit Role</h4>
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="@Model.Name"></label>
+                    <input asp-for="@Model.Name" class="form-control" />
+                    <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Description"></label>
+                    <textarea rows="5" asp-for="@Model.Description" class="form-control"></textarea>
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-dark">Update</button>
+                    <a asp-action="Index" asp-controller="Roles" class="btn btn-danger">Cancel</a>
+                </div>
+                <div class="form-group">
+                    <p>
+                        <a asp-action="Index" asp-controller="Roles">Back To  Roles List</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

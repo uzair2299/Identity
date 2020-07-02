@@ -31,7 +31,7 @@ namespace Identity
                    options.UseSqlServer(
                    Configuration.GetConnectionString("IdentityContextConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options => {
                 options.SignIn.RequireConfirmedAccount = true;
 
                 })

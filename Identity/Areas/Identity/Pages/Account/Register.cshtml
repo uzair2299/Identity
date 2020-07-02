@@ -2,6 +2,7 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+    var UserRole = (List<ApplicationRole>)ViewData["RoleList"];
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -36,6 +37,14 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.RoleName"></label>
+                <select asp-for="Input.RoleName" asp-items=' new SelectList(UserRole,"Id","Name")' asp- class="form-control">
+                    <option>Select Role</option>
+                </select>
+                <span asp-validation-for="Input.RoleName" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
