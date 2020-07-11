@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Identity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +11,7 @@ namespace Identity
 {
     public class Startup
     {
+        //IConfiguration service is setup to read configurations information from all variours configuration sources
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
