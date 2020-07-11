@@ -1,0 +1,43 @@
+﻿@model IEnumerable<UserViewModel>
+@{
+    ViewData["Title"] = "Index";
+    var counter = 0;
+}
+
+<h1>Users List</h1>
+<hr />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@(++counter)</th>
+                    <td>@item.FirstName @item.LastName</td>
+                    <td>@item.Email</td>
+                    <td>
+                        @foreach (var roles in item.RoleNames)
+                        {
+                            @roles @:&nbsp
+                        }
+                                    </td>
+                    <td>
+                    <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit" asp-action="EditUser" asp-controller="User" asp-route-id="@item.Id"><i class="fa fa-edit text-primary"></i></a>
+                    <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-primary"></i></a>
+                    <a class="btn btn-light btn-sm"data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-alt text-danger"></i></a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
