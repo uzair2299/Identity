@@ -9,7 +9,7 @@
 
 <div class="row justify-content-center">
     <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -39,16 +39,26 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
+         
             <div class="form-group">
-                <label asp-for="Input.RoleName"></label>
-                <select asp-for="Input.RoleName" asp-items=' new SelectList(UserRole,"Id","Name")' asp- class="form-control">
-                    <option>Select Role</option>
-                </select>
-                <span asp-validation-for="Input.RoleName" class="text-danger"></span>
+                <label asp-for="Input.ProfileImage" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="Input.ProfileImage" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file...</label>
+                </div>
+                <span asp-validation-for="Input.ProfileImage" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+    
+    <div class="form-group">
+        <label asp-for="Input.RoleName"></label>
+        <select asp-for="Input.RoleName" asp-items=' new SelectList(UserRole,"Id","Name")' asp- class="form-control">
+            <option>Select Role</option>
+        </select>
+        <span asp-validation-for="Input.RoleName" class="text-danger"></span>
     </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
     
 </div>
 

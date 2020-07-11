@@ -31,6 +31,7 @@ namespace Identity.Controllers
                     FirstName = item.FirstName,
                     LastName = item.LastName,
                     Email = item.Email,
+                    ProfilePicture=item.ProfilePicture
                    
                 };
                 userViewModel.RoleNames = await _userManager.GetRolesAsync(item);

@@ -10,6 +10,7 @@
     <thead>
         <tr>
             <th scope="col">#</th>
+            <th scope="col">Profile Image</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
@@ -21,7 +22,16 @@
             foreach (var item in Model)
             {
                 <tr>
-                    <th scope="row">@(++counter)</th>
+                    <th scope="row" class="text-center">@(++counter)</th>
+                    @if (item.ProfilePicture == null)
+                    {
+                        <td class="text-center"><img src="~/Images/icon.png" class="rounded-circle" height="40" width="40" asp-append-version="true"></td>
+                    }
+                    else
+                    {
+                        <td class="text-center"><img src="~/Images/@item.ProfilePicture" class="rounded-circle" height="40" width="40" asp-append-version="true"></td>
+                    }
+
                     <td>@item.FirstName @item.LastName</td>
                     <td>@item.Email</td>
                     <td>
@@ -29,11 +39,11 @@
                         {
                             @roles @:&nbsp
                         }
-                                    </td>
+                    </td>
                     <td>
-                    <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit" asp-action="EditUser" asp-controller="User" asp-route-id="@item.Id"><i class="fa fa-edit text-primary"></i></a>
-                    <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-primary"></i></a>
-                    <a class="btn btn-light btn-sm"data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-alt text-danger"></i></a>
+                        <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit" asp-action="EditUser" asp-controller="User" asp-route-id="@item.Id"><i class="fa fa-edit text-primary"></i></a>
+                        <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-primary"></i></a>
+                        <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-alt text-danger"></i></a>
                     </td>
                 </tr>
             }

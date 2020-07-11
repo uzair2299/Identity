@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -8,6 +9,8 @@ using System.Threading.Tasks;
 using Identity.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -26,13 +29,15 @@ namespace Identity.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<ApplicationRole> roleManager
+            RoleManager<ApplicationRole> roleManager,
+            IWebHostEnvironment hostEnvironment
             )
         {
             _userManager = userManager;
@@ -40,6 +45,7 @@ namespace Identity.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            webHostEnvironment = hostEnvironment;
         }
 
         [BindProperty]
@@ -78,6 +84,10 @@ namespace Identity.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Select Role")]
             public string RoleName { get; set; }
+
+            [Required(ErrorMessage = "Please choose profile image")]
+            [Display(Name = "Profile Picture")]
+            public IFormFile ProfileImage { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -89,12 +99,15 @@ namespace Identity.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+
+            ViewData["RoleList"] = _roleManager.Roles.ToList();
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var role = await _roleManager.FindByIdAsync(Input.RoleName);
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FirstName=Input.FirstName,LastName=Input.LastName};
+                string uniqueFileName = UploadedFile(Input);
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FirstName=Input.FirstName,LastName=Input.LastName,ProfilePicture= uniqueFileName};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -129,6 +142,23 @@ namespace Identity.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private string UploadedFile(InputModel model)
+        {
+            string uniqueFileName = null;
+
+            if (model.ProfileImage != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfileImage.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.ProfileImage.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
     }
 }

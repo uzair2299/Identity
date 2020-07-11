@@ -10,9 +10,6 @@ namespace Identity.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
-        public string fullname { get; set; }
-
-        public string halfName { get; set; }
+        public string ProfilePicture { get; set; }
     }
 }
