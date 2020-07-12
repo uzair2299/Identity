@@ -51,7 +51,7 @@ namespace Identity.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
-
+                    ProfilePicture = user.ProfilePicture
                 };
                 foreach(var role in _roleManager.Roles)
                 {

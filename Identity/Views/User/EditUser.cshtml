@@ -14,32 +14,36 @@
         <form asp-action="EditUser">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            
-            <div>
-                <label class="control-label">Manage Roles</label> <br />
-                                                                  <div class="form-check">
-                                                                      @for (int i = 0; i < Model.userRoleViewModel.Count; i++)
-                                                                      {
-                                                                          <input type="hidden" asp-for="@Model.userRoleViewModel[i].RoleName" />
-                                                                          <input type="hidden" asp-for="@Model.userRoleViewModel[i].RoleId" />
-                                                                          <input asp-for="@Model.userRoleViewModel[i].IsSelected" class="form-check-input" />
-                                                                          <label asp-for="@Model.userRoleViewModel[i].IsSelected" class="control-label">@Model.userRoleViewModel[i].RoleName</label><br />
-                                                                      }
-                                                                  </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-dark btn-block" />
-            </div>
+            <div class="form-group text-center">
+
+                <img src="~/Images/@Model.ProfilePicture" class="rounded-circle" height="150" width="150" asp-append-version="true">
+          </div>
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label class="control-label">Manage Roles</label> <br />
+                    <div class="form-check">
+                        @for (int i = 0; i < Model.userRoleViewModel.Count; i++)
+                        {
+                            <input type="hidden" asp-for="@Model.userRoleViewModel[i].RoleName" />
+                            <input type="hidden" asp-for="@Model.userRoleViewModel[i].RoleId" />
+                            <input asp-for="@Model.userRoleViewModel[i].IsSelected" class="form-check-input" />
+                            <label asp-for="@Model.userRoleViewModel[i].IsSelected" class="control-label">@Model.userRoleViewModel[i].RoleName</label><br />
+                        }
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-dark btn-block" />
+                </div>
         </form>
     </div>
 </div>

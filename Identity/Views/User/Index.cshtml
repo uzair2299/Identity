@@ -6,48 +6,66 @@
 
 <h1>Users List</h1>
 <hr />
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Profile Image</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Role</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            foreach (var item in Model)
-            {
-                <tr>
-                    <th scope="row" class="text-center">@(++counter)</th>
-                    @if (item.ProfilePicture == null)
-                    {
-                        <td class="text-center"><img src="~/Images/icon.png" class="rounded-circle" height="40" width="40" asp-append-version="true"></td>
-                    }
-                    else
-                    {
-                        <td class="text-center"><img src="~/Images/@item.ProfilePicture" class="rounded-circle" height="40" width="40" asp-append-version="true"></td>
-                    }
 
-                    <td>@item.FirstName @item.LastName</td>
-                    <td>@item.Email</td>
-                    <td>
-                        @foreach (var roles in item.RoleNames)
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Profile Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row" class="text-center">@(++counter)</th>
+                        @if (item.ProfilePicture == null)
                         {
-                            @roles @:&nbsp
+                            <td class="text-center"><img src="~/Images/icon.png" class="rounded-circle" height="40" width="40" asp-append-version="true"></td>
                         }
-                    </td>
-                    <td>
-                        <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit" asp-action="EditUser" asp-controller="User" asp-route-id="@item.Id"><i class="fa fa-edit text-primary"></i></a>
-                        <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-primary"></i></a>
-                        <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-alt text-danger"></i></a>
-                    </td>
-                </tr>
+                        else
+                        {
+                            <td class="text-center"><img src="~/Images/@item.ProfilePicture" class="rounded-circle" height="40" width="40" asp-append-version="true"></td>
+                        }
+
+                        <td>@item.FirstName @item.LastName</td>
+                        <td>@item.Email</td>
+                        <td>
+                            @foreach (var roles in item.RoleNames)
+                            {
+                                @roles @:&nbsp
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit" asp-action="EditUser" asp-controller="User" asp-route-id="@item.Id"><i class="fa fa-edit text-primary"></i></a>
+                            <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-primary"></i></a>
+                            <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-alt text-danger"></i></a>
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}
+else
+{
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <div class="alert alert-dark font-weight-bold" role="alert">
+            No User exist yet...!
+        </div>
+    </div>
+    <div class="col-4"></div>
+</div>
+
+}
+
 
