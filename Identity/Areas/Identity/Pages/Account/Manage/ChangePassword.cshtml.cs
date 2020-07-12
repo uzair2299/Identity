@@ -53,12 +53,16 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
+            //If there is a logged-in user, the User property contains a lightweight object with some (but not all) of the user's information.
+            //The UserManager uses this to look up the full user details in the database via the GetUserAsync() method.
+            //Claims principle stores the identity information like user name and authentication type.
+            //The Claims property stores all the claims of the current user.
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
+            // If the user has a password the returned value with be true, otherwise it will be false.
             var hasPassword = await _userManager.HasPasswordAsync(user);
             if (!hasPassword)
             {
