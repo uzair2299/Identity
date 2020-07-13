@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Identity.Models;
 using Identity.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Identity.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class RolesController : Controller
     {
         //RoleManager - used to create Roles and store it in the Persistent Store e.g.Database

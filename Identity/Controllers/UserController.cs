@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Identity.Models;
 using Identity.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

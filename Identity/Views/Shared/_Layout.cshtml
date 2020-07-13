@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,19 +28,25 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">User Management</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Role Management</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-action="Index" asp-controller="Roles">View Roles</a>
-                                <a class="dropdown-item" asp-action="CreateRole" asp-controller="Roles">Create Role</a>
-                            </div>
-                        </li>
-
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register New</a>
+                                </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">User Management</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Role Management</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="Roles">View Roles</a>
+                                    <a class="dropdown-item" asp-action="CreateRole" asp-controller="Roles">Create Role</a>
+                                </div>
+                            </li>
+                        }
                     </ul>
-
                 </div>
             </div>
         </nav>
