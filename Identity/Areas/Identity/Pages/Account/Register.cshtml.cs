@@ -30,7 +30,7 @@ namespace Identity.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IWebHostEnvironment webHostEnvironment;
-
+        
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -46,6 +46,7 @@ namespace Identity.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _roleManager = roleManager;
             webHostEnvironment = hostEnvironment;
+            
         }
 
         [BindProperty]
@@ -85,8 +86,7 @@ namespace Identity.Areas.Identity.Pages.Account
             [Display(Name = "Select Role")]
             public string RoleName { get; set; }
 
-            public List<ApplicationRole> applicationRoles { get; set; }
-
+            //public List<SelectListItem> RoleList { get; set; }
             [Required(ErrorMessage = "Please choose profile image")]
             [Display(Name = "Profile Picture")]
             public IFormFile ProfileImage { get; set; }
@@ -94,7 +94,12 @@ namespace Identity.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            Input.applicationRoles = _roleManager.Roles.ToList();
+            //Input.RoleList = _roleManager.Roles.Select(x => new SelectListItem()
+            //{
+            //    Text = x.Name,
+            //    Value = x.Id
+            //}).ToList();
+            ViewData["RoleList"] = _roleManager.Roles.ToList();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
