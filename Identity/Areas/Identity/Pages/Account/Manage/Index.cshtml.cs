@@ -24,7 +24,7 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
         }
 
         public string Username { get; set; }
-
+        public string ProfilePicture { get; set; }
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -44,7 +44,7 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-
+            ProfilePicture = user.ProfilePicture;
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber

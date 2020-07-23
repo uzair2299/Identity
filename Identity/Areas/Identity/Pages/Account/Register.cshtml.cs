@@ -85,6 +85,8 @@ namespace Identity.Areas.Identity.Pages.Account
             [Display(Name = "Select Role")]
             public string RoleName { get; set; }
 
+            public List<ApplicationRole> applicationRoles { get; set; }
+
             [Required(ErrorMessage = "Please choose profile image")]
             [Display(Name = "Profile Picture")]
             public IFormFile ProfileImage { get; set; }
@@ -92,7 +94,7 @@ namespace Identity.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            ViewData["RoleList"] = _roleManager.Roles.ToList();
+            Input.applicationRoles = _roleManager.Roles.ToList();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }

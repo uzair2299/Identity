@@ -1,4 +1,6 @@
 using Identity.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +37,13 @@ namespace Identity
                 .AddDefaultTokenProviders()
                 .AddDefaultUI()
          .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = "281695259839503";
+                options.AppSecret = "01a069f815ea71544c3961f4c58c56ce";
+            }).AddCookie();
+
             services.Configure<IdentityOptions>(options =>
             {
                 
