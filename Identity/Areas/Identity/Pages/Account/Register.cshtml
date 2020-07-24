@@ -2,66 +2,115 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
-    var UserRole = (List<ApplicationRole>)ViewData["RoleList"];
+    //var UserRole = (List<ApplicationRole>)ViewData["RoleList"];
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="row justify-content-center">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.FirstName"></label>
-                <input asp-for="Input.FirstName" class="form-control" />
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.LastName"></label>
-                <input asp-for="Input.LastName" class="form-control" />
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
 
-         
-            <div class="form-group">
-                <label asp-for="Input.ProfileImage" class="control-label"></label>
-                <div class="custom-file">
-                    <input asp-for="Input.ProfileImage" class="custom-file-input" id="customFile">
-                    <label class="custom-file-label" for="customFile">Choose file...</label>
+
+<div style="max-width:680px;margin:0 auto">
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+
+        <h4 class=" text-center">Create a new account.</h4>
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label asp-for="Input.FirstName"></label>
+                    <input asp-for="Input.FirstName" class="form-control" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="Input.ProfileImage" class="text-danger"></span>
             </div>
-    
-    <div class="form-group">
-        <label asp-for="Input.RoleName"></label>
-        <select asp-for="Input.RoleName" asp-items=' new SelectList(UserRole,"Id","Name")' asp- class="form-control">
-            <option>Select Role</option>
-        </select>
-        <span asp-validation-for="Input.RoleName" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+            <div class="col-6">
+                <div class="form-group">
+                    <label asp-for="Input.LastName"></label>
+                    <input asp-for="Input.LastName" class="form-control" />
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Input.ConfirmPassword"></label>
+                    <input asp-for="Input.ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Input.RoleName"></label>
+                    <select asp-for="Input.RoleName" asp-items="Model.RoleList" asp- class="form-control">
+                        <option>Select Role</option>
+                    </select>
+                    <span asp-validation-for="Input.RoleName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label asp-for="Input.ProfileImage" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="Input.ProfileImage" class="custom-file-input" id="customFile" onchange="ShowPreview(event);">
+                <label class="custom-file-label" for="customFile" id="ImagePreviewLabel">Choose file...</label>
+            </div>
+            <span asp-validation-for="Input.ProfileImage" class="text-danger"></span>
+        </div>
+        <div class="text-center mb-3">
+            <img class="rounded img-thumbnail" alt="Image Preview" id="ImagePreview" style="display:none;margin:0 auto" height=350 width="350">
+        </div>
+        @*<div class="form-group">
+                <label asp-for="Input.RoleName"></label>
+                <select asp-for="Input.RoleName" asp-items=' new SelectList(UserRole,"Id","Name")' asp- class="form-control">
+                    <option>Select Role</option>
+                </select>
+                <span asp-validation-for="Input.RoleName" class="text-danger"></span>
+            </div>*@
+
+    <div class="float-right" style="margin-bottom:100px;margin-top:30px">
+        <button type="submit" class="btn btn-dark">Register</button>
+        </div>
     </form>
 </div>
-    
-</div>
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+<script>
+    function ShowPreview(event) {
+        if (event.target.files.length > 0) {
+            var name = event.target.files[0].name;
+            var scr = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("ImagePreview");
+            preview.src = scr;
+            preview.style.display = "block";
+
+            document.getElementById("ImagePreviewLabel").innerText=name;
+
+        }
+    }
+</script>
+
 }

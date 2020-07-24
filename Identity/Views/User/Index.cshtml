@@ -38,10 +38,19 @@
                         <td>@item.FirstName @item.LastName</td>
                         <td>@item.Email</td>
                         <td>
-                            @foreach (var roles in item.RoleNames)
+                            @if (item.RoleNames.Count > 0)
                             {
-                                @roles @:&nbsp
+                                @foreach (var roles in item.RoleNames)
+                                {
+                                    <span class="badge badge-danger">@roles</span>
+                                }
                             }
+                            else
+                            {
+                                @: -
+                            }
+
+
                         </td>
                         <td>
                             <a class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit" asp-action="EditUser" asp-controller="User" asp-route-id="@item.Id"><i class="fa fa-edit text-primary"></i></a>

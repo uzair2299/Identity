@@ -52,6 +52,8 @@ namespace Identity.Areas.Identity.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [Required]
+        public List<SelectListItem> RoleList { get; set; }
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
@@ -82,24 +84,31 @@ namespace Identity.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-            [Required]
+            [Required(ErrorMessage ="Role is Required")]
             [Display(Name = "Select Role")]
             public string RoleName { get; set; }
 
-            //public List<SelectListItem> RoleList { get; set; }
+            //public List<SelectListItem> RoleList = new List<SelectListItem>();
+            //public SelectList Options { get; set; }
+
+
             [Required(ErrorMessage = "Please choose profile image")]
             [Display(Name = "Profile Picture")]
             public IFormFile ProfileImage { get; set; }
+
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            //Input.RoleList = _roleManager.Roles.Select(x => new SelectListItem()
-            //{
-            //    Text = x.Name,
-            //    Value = x.Id
-            //}).ToList();
-            ViewData["RoleList"] = _roleManager.Roles.ToList();
+            //Input.Options = new SelectList(_roleManager.Roles.ToList(), "Id", "Name");
+
+            RoleList = _roleManager.Roles.Select(x => new SelectListItem()
+            {
+                Text = x.Name,
+                Value = x.Id
+            }).ToList();
+            //ViewData["RoleList"] = _roleManager.Roles.ToList();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -107,7 +116,7 @@ namespace Identity.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
 
-            ViewData["RoleList"] = _roleManager.Roles.ToList();
+            //ViewData["RoleList"] = _roleManager.Roles.ToList();
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)

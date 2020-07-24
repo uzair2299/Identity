@@ -36,6 +36,18 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Required(ErrorMessage = "First Name is required.")]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+
+            [Required(ErrorMessage = "Last Name is required.")]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Display(Name = "Account Title : ")]
+            public IList<string> RoleName { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -47,7 +59,10 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
             ProfilePicture = user.ProfilePicture;
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                RoleName =await _userManager.GetRolesAsync(user)
             };
         }
 
@@ -76,21 +91,37 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
-
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+            user.PhoneNumber = Input.PhoneNumber;
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
-            }
+                await _signInManager.RefreshSignInAsync(user);
+                StatusMessage = "Your profile has been updated";
+                return RedirectToPage();
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
-            return RedirectToPage();
+            }
+            else
+            {
+                await LoadAsync(user);
+                return Page();
+            }
+            //var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+
+            //if (Input.PhoneNumber != phoneNumber)
+            //{
+            //    var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+            //    if (!setPhoneResult.Succeeded)
+            //    {
+            //        StatusMessage = "Unexpected error when trying to set phone number.";
+            //        return RedirectToPage();
+            //    }
+            //}
+
+            
+            //StatusMessage = "Your profile has been updated";
+            
         }
     }
 }

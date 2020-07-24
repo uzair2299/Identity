@@ -49,7 +49,7 @@ namespace Identity.Controllers
                 ApplicationUser user = await _userManager.FindByIdAsync(Id);
                 UserEditViewModel userViewModel = new UserEditViewModel()
                 {
-                    Id = user.Id,
+                    
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
