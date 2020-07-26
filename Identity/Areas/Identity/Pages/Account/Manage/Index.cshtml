@@ -10,15 +10,24 @@
 <div class="row">
     <div class="col-md-6">
 
-        <form id="profile-form" method="post">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
             <div class="form-group text-center">
-                <img src="~/Images/@Model.ProfilePicture" class="rounded-circle" height="150" width="150" asp-append-version="true" style="box-shadow: 0px 0px 13px 3px rgba(0, 0, 0, 0.2)">
+                <img src="~/Images/@Model.ProfilePicture" class="rounded-circle" height="150" width="150" asp-append-version="true" style="box-shadow: 0px 0px 13px 3px rgba(0, 0, 0, 0.2)" id="ImagePreview">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.ProfileImage" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="Input.ProfileImage" class="custom-file-input" id="customFile" onchange="ShowPreview(event);">
+                    <label class="custom-file-label" for="customFile" id="ImagePreviewLabel">Choose file...</label>
+                </div>
+                <span asp-validation-for="Input.ProfileImage" class="text-danger"></span>
             </div>
             <hr />
             <div class="text-center">
                 @if (Model.Input.RoleName.Count > 0)
                 {
-                 <label asp-for="Input.RoleName" class="font-weight-bold"></label>
+                    <label asp-for="Input.RoleName" class="font-weight-bold"></label>
                     @foreach (var item in Model.Input.RoleName)
                     {
                         <span class="badge badge-danger">@item</span>
@@ -28,7 +37,7 @@
                 {
 
                 }
-                    </div>
+            </div>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -55,4 +64,20 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+
+    <script>
+        function ShowPreview(event) {
+            if (event.target.files.length > 0) {
+                var name = event.target.files[0].name;
+                var scr = URL.createObjectURL(event.target.files[0]);
+                var preview = document.getElementById("ImagePreview");
+                preview.src = scr;
+                //preview.style.display = "block";
+
+                document.getElementById("ImagePreviewLabel").innerText = name;
+
+            }
+        }
+    </script>
 }

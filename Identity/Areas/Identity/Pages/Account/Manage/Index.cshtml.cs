@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Identity.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,13 +17,16 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+             IWebHostEnvironment hostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _webHostEnvironment = hostEnvironment;
         }
 
         public string Username { get; set; }
@@ -48,6 +54,9 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Account Title : ")]
             public IList<string> RoleName { get; set; }
+
+            [Display(Name = "Profile Image")]
+            public IFormFile ProfileImage { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -92,8 +101,15 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
             user.FirstName = Input.FirstName;
-            user.LastName = Input.LastName;
+            user.LastName = Input.LastName; 
             user.PhoneNumber = Input.PhoneNumber;
+            if (Input.ProfileImage != null)
+            {
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "Images",user.ProfilePicture);
+                System.IO.File.Delete(path);
+                string uniqueFileName= UploadedFile(Input.ProfileImage);
+                user.ProfilePicture = uniqueFileName;
+            }
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
@@ -122,6 +138,23 @@ namespace Identity.Areas.Identity.Pages.Account.Manage
             
             //StatusMessage = "Your profile has been updated";
             
+        }
+
+        private string UploadedFile(IFormFile formFile)
+        {
+            string uniqueFileName = null;
+
+            if (formFile != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    formFile.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
     }
 }
