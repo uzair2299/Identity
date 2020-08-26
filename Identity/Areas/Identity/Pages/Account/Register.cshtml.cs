@@ -119,11 +119,19 @@ namespace Identity.Areas.Identity.Pages.Account
             //ViewData["RoleList"] = _roleManager.Roles.ToList();
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            //The ModelState.IsValid property is used to check that the data contains the required values
             if (ModelState.IsValid)
             {
                 var role = await _roleManager.FindByIdAsync(Input.RoleName);
                 string uniqueFileName = UploadedFile(Input);
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FirstName=Input.FirstName,LastName=Input.LastName,ProfilePicture= uniqueFileName};
+                /* The result from the CreateAsync method is an IdentityResult object.
+                 1:Succeeded >> Returns true if the operation succeeded.
+                 2:Errors Returns a sequence of IdentityError objects that describe the errors encountered while attempting the operation.
+                 NOTE: The IdentityError class provides a Description property that summarizes the problem. 
+
+                 */
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -150,6 +158,12 @@ namespace Identity.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
+                /*
+                 * If the Succeeded property is false , then the sequence of IdentityError objects provided by the Errors 
+                 * property is enumerated, with the Description property used to create a model-level validation error using 
+                 * the ModelState.AddModelError method
+                 */
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

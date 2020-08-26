@@ -29,14 +29,20 @@ namespace Identity
             services.AddDbContext<ApplicationDbContext>(options =>
                    options.UseSqlServer(
                    Configuration.GetConnectionString("IdentityContextConnection")));
-
+            /*identity start*/
+            /* The AddIdentity method has type parameters that specify the class used to represent users and the class used to represent roles.
+               I have specified the AppUser class for users and the ApplicationRole class for roles.
+               The AddEntityFrameworkStores method specifies that Identity should use Entity Framework Core to store and retrieve its data, using the database context class that I created earlier
+             */
             services.AddIdentity<ApplicationUser, ApplicationRole>(options => {
                 options.SignIn.RequireConfirmedAccount = true;
 
                 })
                 .AddDefaultTokenProviders()
                 .AddDefaultUI()
-         .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            /*identity end*/
+
 
             services.AddAuthentication().AddFacebook(options =>
             {
